@@ -274,3 +274,7 @@ ol.questions li { margin-bottom: 10px; }
 }
 @media (max-width: 520px) { .pipeline { grid-template-columns: 1fr; } .related td:first-child { white-space: normal; } }
 /* <<< space-vla <<< */
+
+/* ISS scene mock-up clip in Current progress (2026-10-16) */
+.mockup { margin-top: 22px; }
+.mockup video { width: 100%; border-radius: var(--radius); background: #000; aspect-ratio: 1570 / 600; }
