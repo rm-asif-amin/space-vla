@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Castoro&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css?v=20261016b">
+  <link rel="stylesheet" href="static/css/style.css?v=20261016c">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%232a78d6'/%3E%3Cellipse cx='16' cy='16' rx='15' ry='5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -37,6 +37,20 @@
     </div>
 
     <div class="teaser-top">
+      <figure class="mockup">
+        <video muted loop playsinline autoplay preload="metadata" poster="static/images/iss_mockup_pickcube_liftpeg_poster.jpg">
+          <source src="static/videos/iss_mockup_pickcube_liftpeg.mp4" type="video/mp4">
+        </video>
+        <figcaption>
+          <b>Scene mock-up, not yet the ISS environment.</b> Recorded episodes of the zero-gravity experts (PickCube, top;
+          LiftPeg, bottom) replayed inside the US Lab module from NASA&rsquo;s <a href="https://github.com/nasa/astrobee_media" target="_blank" rel="noopener">astrobee_media</a> models, seen from a station camera, the
+          robot&rsquo;s exterior camera and its wrist camera. Each clip ends just before the gripper first touches the
+          object: after that, most of the original tasks switch gravity on and finish on a table, which would be wrong in
+          the station. I kept only episodes where nothing else touches the object first. The module is scenery only, the
+          blue-gray work plate is my addition, and the physics are still those of the original tabletop tasks. Green ring:
+          PickCube&rsquo;s goal. Ray-traced, 0.5&times; speed.
+        </figcaption>
+      </figure>
       <figure>
         <video muted loop playsinline autoplay preload="metadata" poster="static/images/teaser_zg_tasks_poster.jpg">
           <source src="static/videos/teaser_zg_tasks.mp4" type="video/mp4">
@@ -137,25 +151,10 @@
     <li><span class="badge done">done</span>
       <div><b>Literature review and gap analysis</b> (October 2026), summarized under <a href="#related">Related work</a>.</div></li>
     <li><span class="badge real">in progress</span>
-      <div><b>ISS scene prototype.</b> First step done: a visual mock-up (below), with the robot arm mounted on a deck
+      <div><b>ISS scene prototype.</b> First step done: a visual mock-up (top of the page), with the robot arm mounted on a deck
         rack of the US Lab module from NASA&rsquo;s <a href="https://github.com/nasa/astrobee_media" target="_blank" rel="noopener">astrobee_media</a> station models. Next: the first floating-object tasks
         built in the station itself.</div></li>
   </ul>
-
-  <figure class="mockup">
-    <video muted loop playsinline autoplay preload="metadata" poster="static/images/iss_mockup_pickcube_liftpeg_poster.jpg">
-      <source src="static/videos/iss_mockup_pickcube_liftpeg.mp4" type="video/mp4">
-    </video>
-    <figcaption>
-      <b>Scene mock-up, not yet the ISS environment.</b> Recorded episodes of the zero-gravity experts (PickCube, top;
-      LiftPeg, bottom) replayed inside the US Lab module from NASA&rsquo;s <a href="https://github.com/nasa/astrobee_media" target="_blank" rel="noopener">astrobee_media</a> models, seen from a station camera, the
-      robot&rsquo;s exterior camera and its wrist camera. Each clip ends just before the gripper first touches the
-      object: after that, most of the original tasks switch gravity on and finish on a table, which would be wrong in
-      the station. I kept only episodes where nothing else touches the object first. The module is scenery only, the
-      blue-gray work plate is my addition, and the physics are still those of the original tabletop tasks. Green ring:
-      PickCube&rsquo;s goal. Ray-traced, 0.5&times; speed.
-    </figcaption>
-  </figure>
 
 </div></section>
 
