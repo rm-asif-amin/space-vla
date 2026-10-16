@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Space-VLA</title>
+  <meta name="description" content="Work-in-progress project page: an ISS-interior manipulation environment and benchmark, and vision-language-action models trained for microgravity manipulation.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Castoro&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css?v=20261015a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%232a78d6'/%3E%3Cellipse cx='16' cy='16' rx='15' ry='5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="wip-banner" role="note">
+  <strong>Early-stage project</strong> &middot; started October 2026; this page describes the plan and the groundwork it builds on.
+</div>
+
+<header class="hero">
+  <div class="container">
+    <h1><span class="accent">Space-VLA</span>: Vision-Language-Action Models for Manipulation Aboard the Space Station</h1>
+    <div class="authors">
+      <span><a href="https://scholar.google.com/citations?user=d04IKHkAAAAJ&amp;hl=en" target="_blank" rel="noopener">Asif Amin</a></span>
+    </div>
+    <div class="affils"><span>University of California, Riverside</span></div>
+    <div class="venue">Project in progress &middot; contact: <a href="mailto:ramin019@ucr.edu">ramin019@ucr.edu</a></div>
+
+    <div class="links">
+      <a class="btn" href="https://rm-asif-amin.github.io/zerograv-manipulation-site/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3"/></svg>Zero-gravity project (groundwork)
+      </a>
+      <span class="btn disabled" title="Code release planned">
+        <svg viewBox="0 0 24 24"><path d="M8.6 16.6 4 12l4.6-4.6L7.2 6 1.2 12l6 6zm6.8 0L20 12l-4.6-4.6L16.8 6l6 6-6 6z"/></svg>Code <span class="tag">planned</span>
+      </span>
+    </div>
+
+    <div class="tldr">
+      <b>TL;DR</b> &mdash; Robots are starting to work inside the International Space Station, but the
+      vision-language-action models (VLAs) that now drive manipulation on Earth have, to my knowledge, never been trained or tested
+      for it. Every one of them learned from data where objects fall and stay where they are put. I am building an
+      <b class="k">ISS-interior manipulation environment</b>, with the station&rsquo;s real geometry and appearance
+      and exact microgravity physics, and using it as a <b class="k">benchmark and training ground for VLAs</b>.
+      It builds directly on my zero-gravity robot-learning work, which already provides the microgravity physics,
+      the expert policies and the demonstration-to-VLA pipeline.
+    </div>
+
+    <nav class="toc" aria-label="Sections">
+      <a href="#motivation">Motivation</a>
+      <a href="#progress">Current progress</a>
+      <a href="#future">Future directions</a>
+      <a href="#related">Related work</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ================= MOTIVATION ================= -->
+<section id="motivation"><div class="container">
+  <h2>Motivation</h2>
+  <div class="motive">
+    <div>
+      <h4>Space robots have almost no data</h4>
+      <p>Real manipulation data from orbit is scarce and expensive to collect; recent surveys name data scarcity and
+        microgravity dynamics as open problems for learning-based space robots. Simulation is the only place to
+        gather this experience at scale.</p>
+    </div>
+    <div>
+      <h4>Earth VLAs assume gravity</h4>
+      <p>A VLA pretrained on Earth data has learned that released objects settle and nudged objects stop. In
+        microgravity a light touch sends an object drifting across the module. Whether these habits help or hurt
+        in orbit has not been measured.</p>
+    </div>
+    <div>
+      <h4>No benchmark for it yet</h4>
+      <p>Space simulators exist for reinforcement learning, free-flyer control and cargo transport, but to my
+        knowledge none offers language-conditioned manipulation of free-floating objects inside a station, with
+        demonstrations to train VLAs on.</p>
+    </div>
+  </div>
+  <p>The station is also a good proving ground for robot learning in general: it is a fixed, well-documented
+    interior (CAD models exist, as do image sequences with known camera poses recorded by NASA&rsquo;s Astrobee robots), its everyday tasks
+    are concrete (moving cargo bags, stowing tools, catching items that drift away), and its physics are simpler to
+    simulate exactly than most environments on Earth.</p>
+</div></section>
+
+<!-- ================= CURRENT PROGRESS ================= -->
+<section id="progress"><div class="container">
+  <h2>Current progress</h2>
+  <p>The ISS environment itself is just starting. What already exists is the groundwork from my
+    <a href="https://rm-asif-amin.github.io/zerograv-manipulation-site/" target="_blank" rel="noopener">zero-gravity
+    manipulation project</a>, which trains robots with gravity switched off in simulation; there, zero gravity is a
+    training aid for tasks on Earth, while here it is the place the robot will actually work.</p>
+
+  <ul class="status">
+    <li><span class="badge done">done</span>
+      <div><b>Microgravity physics in a GPU simulator.</b> Per-environment gravity control in ManiSkill3: thousands of
+        parallel environments, each of which can have gravity off, on, or switch on at contact or grasp. Objects float
+        without damping and keep any momentum the robot gives them.</div></li>
+    <li><span class="badge done">done</span>
+      <div><b>Containment volumes.</b> Thin, camera-invisible walls that stop a floating object from drifting out of
+        reach but let the robot arm pass through &mdash; the simulated equivalent of a station rack bay.</div></li>
+    <li><span class="badge done">done</span>
+      <div><b>Zero-gravity expert policies on eight tasks</b> (reaching, pushing, pulling, picking, rolling, peg lifting,
+        YCB objects), trained with reinforcement learning, 3 seeds each. On Earth-gravity test tasks they reach objects
+        at heights where gravity-trained experts almost never do.</div></li>
+    <li><span class="badge real">in progress</span>
+      <div><b>Demonstration &rarr; VLA pipeline.</b> Expert demonstrations collected and released as datasets; distillation
+        into a VLA (&pi;0.5) is underway in the zero-gravity project and carries over unchanged.</div></li>
+    <li><span class="badge done">done</span>
+      <div><b>Literature review and gap analysis</b> (October 2026), summarized under <a href="#related">Related work</a>.</div></li>
+    <li><span class="badge real">in progress</span>
+      <div><b>ISS scene prototype.</b> Loading an ISS module model into the simulator, with an arm mounted on a rack wall
+        and the first floating-object tasks.</div></li>
+  </ul>
+
+  <figure class="fig" style="margin-top:22px">
+    <img src="static/images/teaser_zg_tasks_poster.jpg" alt="Six simulated tasks with a Franka Panda arm: PickCube, PushCube, LiftPeg, PickSingleYCB, PushT and PullCube. Objects float above the table." loading="lazy">
+    <figcaption><b>Groundwork: zero-gravity experts on six of the eight tasks</b> (from the zero-gravity project).
+      Objects start floating in mid-air. The ISS environment replaces the table with a station module and keeps
+      gravity off for the whole task.</figcaption>
+  </figure>
+</div></section>
+
+<!-- ================= FUTURE ================= -->
+<section id="future"><div class="container">
+  <h2>Future directions</h2>
+
+  <h3>The approach</h3>
+  <div class="pipeline">
+    <div><h4>Real ISS appearance</h4>
+      <p>Station geometry from CAD models first, then 3D reconstruction (Gaussian splats) from posed ISS images.</p>
+      <span class="src">Source: NASA models, Astrobee ISS images</span></div>
+    <div><h4>Exact microgravity physics</h4>
+      <p>From the simulator, not learned from video: free-floating objects, momentum transfer, contact.</p>
+      <span class="src">Source: our GPU force mechanism</span></div>
+    <div><h4>Tasks from real operations</h4>
+      <p>Catch a drifting item, stop a tumbling one, stow into a rack slot, move a cargo bag, hand over a tool.</p>
+      <span class="src">Source: ISS operations footage</span></div>
+    <div><h4>Experts &rarr; data &rarr; VLAs</h4>
+      <p>Reinforcement-learning experts generate language-labeled demonstrations; VLAs are trained and evaluated on them.</p>
+      <span class="src">Source: zero-gravity project pipeline</span></div>
+  </div>
+  <p class="muted" style="font-size:15px">Splitting it this way keeps each part on solid ground: the physics of
+    microgravity are known exactly, so they come from the simulator, while ISS imagery provides what simulators are
+    worst at &mdash; realistic appearance and realistic tasks.</p>
+
+  <h3>Research questions</h3>
+  <ol class="questions">
+    <li><b>Do Earth-pretrained VLAs carry a gravity bias?</b> Evaluate them zero-shot in the ISS scene and catalog how
+      they fail: releasing objects that then drift, pushing too hard, never stopping a moving object.</li>
+    <li><b>What is the best starting point for space?</b> Compare adaptation from Earth-gravity, gravity-randomized
+      and zero-gravity experts and VLAs, with few microgravity demonstrations.</li>
+    <li><b>How much does visual realism matter?</b> Compare CAD-rendered and reconstructed ISS visuals for
+      policies that must work from images.</li>
+    <li><b>Can a world model of the station replace the hand-built scene?</b> Longer term: learn an action-conditioned
+      world model of the ISS interior from real footage, so VLAs can practice in it.</li>
+  </ol>
+
+  <h3>Roadmap</h3>
+  <ol class="phases">
+    <li class="now"><h4>1 &middot; ISS scene prototype <span class="when">&mdash; now</span></h4>
+      <p>A station module in the simulator, an arm mounted on a rack wall, and two or three floating-object tasks.</p></li>
+    <li><h4>2 &middot; Gravity-bias probe</h4>
+      <p>Zero-shot evaluation of existing VLAs in the ISS scene, with a failure-mode taxonomy.</p></li>
+    <li><h4>3 &middot; Experts, demonstrations and VLA training</h4>
+      <p>Expert policies for each task, language-labeled demonstrations, VLA fine-tuning, and the adaptation study.</p></li>
+    <li><h4>4 &middot; Realism and release</h4>
+      <p>Reconstructed ISS visuals, a public benchmark (tasks &times; lighting &times; objects) and dataset.</p></li>
+    <li><h4>5 &middot; Beyond a fixed arm</h4>
+      <p>A free-flying robot with an arm, where every push also moves the robot, and real-world checks on planar
+        air-bearing analogues of microgravity.</p></li>
+  </ol>
+</div></section>
+
+<!-- ================= RELATED ================= -->
+<section id="related"><div class="container">
+  <h2>Related work</h2>
+  <div class="table-wrap">
+  <table class="related">
+    <thead><tr><th>Work</th><th>What it does</th><th>What is still open</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://arxiv.org/abs/2509.23328" target="_blank" rel="noopener">Space Robotics Bench</a></td>
+        <td>Procedurally generated Isaac Lab environments for orbital, lunar and planetary robots; manipulation tasks
+          such as debris capture and assembly, benchmarked with reinforcement learning.</td>
+        <td>No language-conditioned policies or VLAs; no station interior.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2505.01630" target="_blank" rel="noopener">pyastrobee</a></td>
+        <td>Open-source ISS simulation for NASA&rsquo;s Astrobee; deformable cargo-bag transport with model-predictive control.</td>
+        <td>Not learning-based.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2512.13514" target="_blank" rel="noopener">Int-Ball2 docking</a></td>
+        <td>Reinforcement-learning docking for JAXA&rsquo;s Int-Ball2 in an Isaac Sim model of an ISS module.</td>
+        <td>Navigation, not manipulation.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2512.03729" target="_blank" rel="noopener">APIARY</a></td>
+        <td>First reinforcement-learning control of a free-flyer aboard the ISS (Astrobee), trained in Isaac Lab.</td>
+        <td>Navigation and control, not manipulation.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2609.25614" target="_blank" rel="noopener">Astrobee four-finger payload</a></td>
+        <td>VR teleoperation of a dexterous free-flyer payload that transports an ISS cargo bag.</td>
+        <td>No learning or dataset.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2408.05924" target="_blank" rel="noopener">Space-LLaVA</a>,
+          <a href="https://arxiv.org/abs/2512.09111" target="_blank" rel="noopener">SAGES</a></td>
+        <td>A vision-language model for extraterrestrial imagery; language commands turned into spacecraft trajectories.</td>
+        <td>No manipulation actions.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2604.14399" target="_blank" rel="noopener">SpaceMind</a></td>
+        <td>A vision-language agent that routes between skills for on-orbit servicing.</td>
+        <td>Not an end-to-end VLA.</td></tr>
+      <tr><td><a href="https://arxiv.org/abs/2501.07802" target="_blank" rel="noopener">Carrasco et al.</a>,
+          <a href="https://doi.org/10.3390/astronautics1030015" target="_blank" rel="noopener">SELENE</a>,
+          <a href="https://arxiv.org/abs/2610.19224" target="_blank" rel="noopener">Huang &amp; Gao</a></td>
+        <td>VLAs adapted to single space settings: lab inspection of satellite hardware, a lunar robot prototype, lunar rover docking.</td>
+        <td>Earth-like gravity or navigation; no free-floating objects.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="finding">To my knowledge, no benchmark, dataset or trained VLA yet covers language-conditioned manipulation
+    of free-floating objects inside a space station, and no study has measured whether Earth-pretrained VLAs carry a
+    gravity bias. That is the gap this project targets.</p>
+</div></section>
+</main>
+
+<footer>
+  <div class="container">Asif Amin &middot; University of California, Riverside &middot; <a href="mailto:ramin019@ucr.edu">ramin019@ucr.edu</a>
+    &middot; Page last updated October 2026</div>
+</footer>
+</body>
+</html>
